@@ -7,7 +7,6 @@ You can also add a function hook to an endpoint to execute custom code when the 
 
 Example:
 ```python
-Copy code
 import socket
 from threading import Thread
 from http_server import InitializeHttpSocket
