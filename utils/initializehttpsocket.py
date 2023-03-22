@@ -11,8 +11,8 @@ class InitializeHttpSocket:
         self.__PORT:str = PORT
         self.__endpoints:dict = {}
 
-    def add_endpoint(self, endpoint: str, html_file: str, METHOD=["GET"]) -> None:
-        self.__endpoints[endpoint] = [html_file, METHOD]
+    def add_endpoint(self, endpoint: str, html_file: str, METHOD=["GET"],function_hook=None) -> None:
+        self.__endpoints[endpoint] = [html_file, METHOD,function_hook]
         return None
 
     def run(self) -> None:
@@ -27,6 +27,8 @@ class InitializeHttpSocket:
         for endpoint in self.__endpoints:
             if endpoint == __parsed_req[1] and __parsed_req[0] in self.__endpoints[endpoint][1]:
                 __html_file:str = self.__endpoints[endpoint][0]
+                if self.__endpoints[endpoint][2] != None:
+                    Thread(target=self.__endpoints[endpoint][2]()).start()
                 with open(__html_file) as htmlf:
                     __html_file:str = htmlf.read()
                 __response:str = f"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n{__html_file}"
